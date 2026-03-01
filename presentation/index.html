@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Contract Fundamentals — OBT Workshop</title>
+
+    <!-- Reveal.js from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --obt-red: #D91E2A;
+            --obt-red-light: #FF3542;
+            --obt-dark: #0A0A0F;
+            --obt-dark-2: #12121A;
+            --obt-gray: #8A8A9A;
+            --obt-light: #F0F0F5;
+            --obt-white: #FFFFFF;
+            --obt-navy: #1A1A3E;
+            --obt-green: #22C55E;
+            --obt-red-dim: #EF4444;
+        }
+
+        /* ========== BASE ========== */
+        .reveal-viewport {
+            background: linear-gradient(135deg, var(--obt-dark) 0%, var(--obt-dark-2) 70%, var(--obt-navy) 100%) !important;
+        }
+
+        .reveal {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-weight: 400;
+            color: var(--obt-light);
+        }
+
+        .reveal .slides {
+            text-align: left;
+        }
+
+        .reveal .slides section {
+            padding: 22px 40px;
+            box-sizing: border-box;
+            height: 100%;
+            display: flex !important;
+            flex-direction: column;
+        }
+
+        /* ========== TYPOGRAPHY ========== */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--obt-white);
+            text-transform: none;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 0.3em;
+        }
+
+        .reveal h1 { font-size: 1.7em; }
+        .reveal h2 { font-size: 1.25em; }
+        .reveal h3 { font-size: 0.95em; color: var(--obt-red); }
+        .reveal h4 { font-size: 0.75em; color: var(--obt-gray); font-weight: 400; }
+
+        .reveal p, .reveal li {
+            font-size: 0.62em;
+            line-height: 1.5;
+            color: var(--obt-light);
+        }
+
+        .reveal ul, .reveal ol {
+            margin-left: 0;
+        }
+
+        .reveal li {
+            margin-bottom: 0.35em;
+            list-style: none;
+            padding-left: 1.2em;
+            position: relative;
+        }
+
+        .reveal li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5em;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--obt-red);
+        }
+
+        /* ========== SLIDE BACKGROUNDS ========== */
+        .reveal .slides section {
+            background: transparent !important;
+        }
+
+        .reveal .slide-background {
+            background: transparent !important;
+        }
+
+        /* Section title slides */
+        .reveal .slides section.section-title {
+            display: flex !important;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+            height: 100%;
+        }
+
+        .section-title .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6em;
+            color: var(--obt-red);
+            font-weight: 500;
+            margin-bottom: 0.4em;
+            letter-spacing: 0.1em;
+        }
+
+        .section-title h2 {
+            font-size: 1.7em;
+            margin-bottom: 0.25em;
+        }
+
+        .section-title .section-subtitle {
+            font-size: 0.72em;
+            color: var(--obt-gray);
+            font-weight: 300;
+        }
+
+        /* ========== TITLE SLIDE ========== */
+        .title-slide {
+            display: flex !important;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center !important;
+        }
+
+        .title-slide .logo-container {
+            margin-bottom: 1em;
+            position: relative;
+            display: inline-block;
+        }
+
+        .title-slide .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(217,30,42,0.25) 0%, rgba(26,26,62,0.12) 50%, transparent 70%);
+            border-radius: 50%;
+            animation: logoGlow 4s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .title-slide .logo-container img {
+            height: 64px;
+            width: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+        }
+
+        .title-slide h1 {
+            font-size: 2.1em;
+            margin-bottom: 0.2em;
+            background: linear-gradient(135deg, var(--obt-white) 0%, var(--obt-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(217,30,42,0.2));
+        }
+
+        .title-slide .subtitle {
+            font-size: 0.8em;
+            color: var(--obt-gray);
+            font-weight: 300;
+            margin-bottom: 2em;
+        }
+
+        .title-slide .presenter-info {
+            text-align: center;
+        }
+
+        .title-slide .presenter-name {
+            font-size: 0.75em;
+            font-weight: 500;
+            color: var(--obt-white);
+            margin-bottom: 0.2em;
+        }
+
+        .title-slide .presenter-role {
+            font-size: 0.62em;
+            color: var(--obt-gray);
+            font-weight: 300;
+        }
+
+        .title-slide .event-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55em;
+            color: var(--obt-red);
+            font-weight: 400;
+            margin-top: 0.8em;
+            letter-spacing: 0.05em;
+        }
+
+        /* ========== COMPONENTS ========== */
+
+        /* Accent line */
+        .accent-line {
+            width: 36px;
+            height: 2px;
+            background: var(--obt-red);
+            border-radius: 2px;
+            margin-bottom: 0.4em;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 0.4em;
+        }
+
+        .concept-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .concept-card:hover {
+            border-color: rgba(217, 30, 42, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .concept-card .card-icon {
+            font-size: 0.8em;
+            color: var(--obt-red);
+            margin-bottom: 0.15em;
+        }
+
+        .concept-card h4 {
+            font-size: 0.6em;
+            font-weight: 600;
+            color: var(--obt-white);
+            margin-bottom: 0.15em;
+        }
+
+        .concept-card p {
+            font-size: 0.46em;
+            color: var(--obt-gray);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Single column card list */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 0.4em;
+        }
+
+        .card-list .concept-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 12px;
+        }
+
+        .card-list .card-icon {
+            font-size: 0.85em;
+            color: var(--obt-red);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .card-list .card-content h4 {
+            margin-bottom: 0.2em;
+        }
+
+        /* Comparison boxes */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 0.4em;
+        }
+
+        .comparison-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 0.4em;
+        }
+
+        .comparison-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .comparison-box.active {
+            border-color: var(--obt-red);
+            background: rgba(217, 30, 42, 0.08);
+        }
+
+        .comparison-box .era {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.48em;
+            color: var(--obt-red);
+            margin-bottom: 0.4em;
+            letter-spacing: 0.1em;
+        }
+
+        .comparison-box h4 {
+            font-size: 0.65em;
+            color: var(--obt-white);
+            margin-bottom: 0.15em;
+        }
+
+        .comparison-box p {
+            font-size: 0.48em;
+            color: var(--obt-gray);
+            margin: 0;
+        }
+
+        .comparison-box .icon {
+            font-size: 1.2em;
+            margin-bottom: 0.2em;
+            color: var(--obt-gray);
+        }
+
+        /* Steps */
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 0.4em;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: rgba(217, 30, 42, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--obt-red);
+            color: var(--obt-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5em;
+            font-weight: 600;
+            margin: 0 auto 0.3em;
+        }
+
+        .step-card h4 {
+            font-size: 0.55em;
+            font-weight: 600;
+            color: var(--obt-white);
+            margin-bottom: 0.2em;
+        }
+
+        .step-card p {
+            font-size: 0.42em;
+            color: var(--obt-gray);
+            line-height: 1.3;
+            margin: 0;
+        }
+
+        /* Arrow between steps */
+        .step-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--obt-red);
+            font-size: 0.8em;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 0.4em;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.44em;
+            line-height: 1.55;
+            color: var(--obt-light);
+        }
+
+        .code-block .code-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.42em;
+            color: var(--obt-gray);
+            margin-bottom: 0.6em;
+            padding-bottom: 0.4em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .code-keyword { color: #C678DD; }
+        .code-type { color: #E5C07B; }
+        .code-string { color: #98C379; }
+        .code-comment { color: #5C6370; font-style: italic; }
+        .code-function { color: #61AFEF; }
+        .code-number { color: #D19A66; }
+        .code-variable { color: #E06C75; }
+        .code-operator { color: #56B6C2; }
+
+        /* Warning / Takeaway boxes */
+        .warning-box {
+            background: rgba(217, 30, 42, 0.08);
+            border-left: 3px solid var(--obt-red);
+            border-radius: 0 8px 8px 0;
+            padding: 10px 14px;
+            margin-top: 0.4em;
+        }
+
+        .warning-box h4 {
+            font-size: 0.58em;
+            font-weight: 600;
+            color: var(--obt-red);
+            margin-bottom: 0.3em;
+        }
+
+        .warning-box p {
+            font-size: 0.5em;
+            color: var(--obt-light);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Success box */
+        .success-box {
+            background: rgba(34, 197, 94, 0.08);
+            border-left: 3px solid var(--obt-green);
+            border-radius: 0 8px 8px 0;
+            padding: 10px 14px;
+            margin-top: 0.4em;
+        }
+
+        .success-box h4 {
+            font-size: 0.58em;
+            font-weight: 600;
+            color: var(--obt-green);
+            margin-bottom: 0.3em;
+        }
+
+        .success-box p {
+            font-size: 0.5em;
+            color: var(--obt-light);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Quote style */
+        .quote-block {
+            border-left: 3px solid var(--obt-red);
+            padding-left: 16px;
+            margin: 0.5em 0;
+        }
+
+        .quote-block p {
+            font-size: 0.9em;
+            font-weight: 300;
+            color: var(--obt-white);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .quote-block .quote-author {
+            font-size: 0.5em;
+            color: var(--obt-gray);
+            font-style: normal;
+            margin-top: 0.5em;
+        }
+
+        /* Pros / Cons grid */
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 0.4em;
+        }
+
+        .pros-column, .cons-column {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .pros-column {
+            border-top: 2px solid var(--obt-green);
+        }
+
+        .cons-column {
+            border-top: 2px solid var(--obt-red-dim);
+        }
+
+        .pros-column h4, .cons-column h4 {
+            font-size: 0.58em;
+            font-weight: 600;
+            margin-bottom: 0.5em;
+        }
+
+        .pros-column h4 { color: var(--obt-green); }
+        .cons-column h4 { color: var(--obt-red-dim); }
+
+        .pros-column li::before { background: var(--obt-green); }
+        .cons-column li::before { background: var(--obt-red-dim); }
+
+        /* Vending machine diagram */
+        .vending-diagram {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 12px;
+            align-items: center;
+            margin-top: 0.4em;
+        }
+
+        .vending-side {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .vending-side.smart {
+            border-color: rgba(217, 30, 42, 0.3);
+            background: rgba(217, 30, 42, 0.05);
+        }
+
+        .vending-side .side-icon {
+            font-size: 1.6em;
+            margin-bottom: 0.3em;
+        }
+
+        .vending-side h4 {
+            font-size: 0.62em;
+            font-weight: 600;
+            color: var(--obt-white);
+            margin-bottom: 0.4em;
+        }
+
+        .vending-side .side-steps {
+            text-align: left;
+        }
+
+        .vending-side .side-steps p {
+            font-size: 0.42em;
+            color: var(--obt-gray);
+            margin: 0.2em 0;
+            padding-left: 0.8em;
+            position: relative;
+        }
+
+        .vending-side .side-steps p::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--obt-red);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+
+        .vending-vs {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65em;
+            color: var(--obt-gray);
+            font-weight: 500;
+        }
+
+        /* Lifecycle flow */
+        .lifecycle-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 0.5em;
+        }
+
+        .lifecycle-step {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 12px;
+            text-align: center;
+            min-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .lifecycle-step:hover {
+            border-color: rgba(217, 30, 42, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .lifecycle-step .step-icon {
+            font-size: 1.0em;
+            color: var(--obt-red);
+            margin-bottom: 0.3em;
+        }
+
+        .lifecycle-step h4 {
+            font-size: 0.5em;
+            font-weight: 600;
+            color: var(--obt-white);
+            margin-bottom: 0.15em;
+        }
+
+        .lifecycle-step p {
+            font-size: 0.38em;
+            color: var(--obt-gray);
+            margin: 0;
+        }
+
+        .lifecycle-arrow {
+            color: var(--obt-red);
+            font-size: 0.7em;
+            flex-shrink: 0;
+        }
+
+        /* Timeline / Story */
+        .timeline-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 0.4em;
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5em;
+        }
+
+        .timeline-header .timeline-icon {
+            font-size: 1.2em;
+            color: var(--obt-red);
+        }
+
+        .timeline-header .timeline-meta {
+            flex: 1;
+        }
+
+        .timeline-header h4 {
+            font-size: 0.62em;
+            font-weight: 600;
+            color: var(--obt-white);
+            margin-bottom: 0.1em;
+        }
+
+        .timeline-header .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.42em;
+            color: var(--obt-red);
+        }
+
+        .timeline-body p {
+            font-size: 0.48em;
+            color: var(--obt-light);
+            line-height: 1.6;
+            margin-bottom: 0.5em;
+        }
+
+        .timeline-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 0.4em;
+        }
+
+        .timeline-stat {
+            text-align: center;
+        }
+
+        .timeline-stat .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: var(--obt-red);
+        }
+
+        .timeline-stat .stat-label {
+            font-size: 0.38em;
+            color: var(--obt-gray);
+        }
+
+        /* Use case cards - 3 column */
+        .usecase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 0.4em;
+        }
+
+        .usecase-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .usecase-card:hover {
+            border-color: rgba(217, 30, 42, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .usecase-card .usecase-icon {
+            font-size: 1.1em;
+            color: var(--obt-red);
+            margin-bottom: 0.25em;
+        }
+
+        .usecase-card h4 {
+            font-size: 0.55em;
+            font-weight: 600;
+            color: var(--obt-white);
+            margin-bottom: 0.2em;
+        }
+
+        .usecase-card p {
+            font-size: 0.4em;
+            color: var(--obt-gray);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Recap grid */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 0.4em;
+        }
+
+        .recap-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .recap-card:hover {
+            border-color: rgba(217, 30, 42, 0.3);
+        }
+
+        .recap-card .recap-icon {
+            font-size: 0.9em;
+            color: var(--obt-green);
+            flex-shrink: 0;
+        }
+
+        .recap-card h4 {
+            font-size: 0.55em;
+            font-weight: 600;
+            color: var(--obt-white);
+            margin-bottom: 0.15em;
+        }
+
+        .recap-card p {
+            font-size: 0.42em;
+            color: var(--obt-gray);
+            margin: 0;
+        }
+
+        /* Agenda items */
+        .agenda-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-top: 0.5em;
+        }
+
+        .agenda-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .agenda-item:hover {
+            border-color: rgba(217, 30, 42, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .agenda-item .agenda-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--obt-red);
+            color: var(--obt-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6em;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .agenda-item .agenda-text {
+            font-size: 0.58em;
+            color: var(--obt-white);
+            font-weight: 500;
+        }
+
+        .agenda-item .agenda-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.42em;
+            color: var(--obt-gray);
+            margin-left: auto;
+        }
+
+        /* Gas analogy */
+        .gas-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 0.4em;
+        }
+
+        .gas-side {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .gas-side .gas-icon {
+            font-size: 1.4em;
+            margin-bottom: 0.3em;
+        }
+
+        .gas-side h4 {
+            font-size: 0.58em;
+            color: var(--obt-white);
+            margin-bottom: 0.3em;
+        }
+
+        .gas-side p {
+            font-size: 0.46em;
+            color: var(--obt-gray);
+            margin: 0.2em 0;
+        }
+
+
+        /* ========== CLOSING SLIDE ========== */
+        .closing-slide {
+            display: flex !important;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center !important;
+        }
+
+        .closing-slide h2 {
+            font-size: 1.8em;
+            margin-bottom: 0.3em;
+        }
+
+        .closing-slide .closing-subtitle {
+            font-size: 0.7em;
+            color: var(--obt-gray);
+            margin-bottom: 1.5em;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 0.8em;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.5em;
+            color: var(--obt-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--obt-red);
+        }
+
+        .social-link i {
+            font-size: 1.2em;
+            color: var(--obt-red);
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .reveal .slides section .fragment.fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal .slides section .fragment.fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Annotated code */
+        .annotated-code {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 0.4em;
+        }
+
+        .annotated-code .code-block {
+            margin-top: 0;
+        }
+
+        .annotation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .annotation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+        }
+
+        .annotation-item .ann-num {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--obt-red);
+            color: var(--obt-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.4em;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .annotation-item p {
+            font-size: 0.4em;
+            color: var(--obt-light);
+            margin: 0;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ==================== SLIDE 1: TITLE ==================== -->
+            <section class="title-slide">
+                <div class="logo-container">
+                    <img src="assets/obt-logo-text.png" alt="OBT Logo">
+                </div>
+                <h1>Smart Contract Fundamentals</h1>
+                <p class="subtitle">Blockchain 101 Series &mdash; Episode 2</p>
+                <div class="presenter-info">
+                    <div class="presenter-name">Yahya Emir Soyer</div>
+                    <div class="presenter-role">ODTU Blockchain</div>
+                    <div class="event-date">March 3, 2026 &bull; ODTU Applied Mathematics Institute</div>
+                </div>
+                <aside class="notes">
+                    Welcome everyone to the second episode of our Blockchain 101 series. Last time we covered Web3 basics, today we dive into Smart Contracts — the powerful building blocks of blockchain technology. No prior blockchain knowledge is needed.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 2: AGENDA ==================== -->
+            <section>
+                <h2>Today's Roadmap</h2>
+                <div class="accent-line"></div>
+                <div class="agenda-list">
+                    <div class="agenda-item fragment fade-up">
+                        <div class="agenda-num">1</div>
+                        <div class="agenda-text">What Are Smart Contracts?</div>
+                        <div class="agenda-time">~10 min</div>
+                    </div>
+                    <div class="agenda-item fragment fade-up">
+                        <div class="agenda-num">2</div>
+                        <div class="agenda-text">How Do They Run Automatically?</div>
+                        <div class="agenda-time">~10 min</div>
+                    </div>
+                    <div class="agenda-item fragment fade-up">
+                        <div class="agenda-num">3</div>
+                        <div class="agenda-text">Advantages & Disadvantages</div>
+                        <div class="agenda-time">~10 min</div>
+                    </div>
+                    <div class="agenda-item fragment fade-up">
+                        <div class="agenda-num">4</div>
+                        <div class="agenda-text">Real-World Use Cases</div>
+                        <div class="agenda-time">~10 min</div>
+                    </div>
+                    <div class="agenda-item fragment fade-up">
+                        <div class="agenda-num">5</div>
+                        <div class="agenda-text">Visualization & Live Demo</div>
+                        <div class="agenda-time">~15 min</div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Here's our plan for today. We'll start with understanding what smart contracts are, then see how they execute automatically, discuss pros and cons, explore real-world use cases, and finish with a live demo using Remix IDE.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 3: SECTION 01 TITLE ==================== -->
+            <section class="section-title">
+                <div class="section-number">SECTION 01</div>
+                <h2>What Are Smart Contracts?</h2>
+                <p class="section-subtitle">Definition, history, and the "Code is Law" philosophy</p>
+                <aside class="notes">
+                    Let's start with the basics. What exactly is a smart contract, where did the idea come from, and why do people say "Code is Law"?
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 4: DEFINITION ==================== -->
+            <section>
+                <h2>Smart Contract &mdash; Defined</h2>
+                <div class="accent-line"></div>
+                <h3 style="margin-top: 0.4em;">A self-executing program stored on a blockchain</h3>
+                <p style="margin-top: 0.3em;">
+                    A smart contract is a piece of code that <strong style="color: var(--obt-white);">automatically enforces the terms of an agreement</strong> when predefined conditions are met &mdash; without any intermediary.
+                </p>
+                <div class="concept-grid fragment fade-up" style="margin-top: 0.8em;">
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-robot"></i></div>
+                        <h4>Self-Executing</h4>
+                        <p>Runs automatically when conditions are triggered. No human intervention needed.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-lock"></i></div>
+                        <h4>Immutable</h4>
+                        <p>Once deployed, the code cannot be changed. The rules are permanent.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-eye"></i></div>
+                        <h4>Transparent</h4>
+                        <p>Anyone can inspect the contract code and verify its logic on-chain.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-handshake-slash"></i></div>
+                        <h4>Trustless</h4>
+                        <p>No need to trust a third party. The code guarantees the outcome.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Think of a smart contract as a program that lives on the blockchain. It has four key properties: it executes itself, it can't be changed once deployed, anyone can read it, and you don't need to trust any middleman because the code handles everything.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 5: NICK SZABO ==================== -->
+            <section>
+                <h2>A Brief History</h2>
+                <div class="accent-line"></div>
+                <div class="timeline-card fragment fade-up">
+                    <div class="timeline-header">
+                        <div class="timeline-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div class="timeline-meta">
+                            <h4>Nick Szabo &mdash; The Inventor</h4>
+                            <div class="timeline-date">1994 &bull; Before Bitcoin even existed</div>
+                        </div>
+                    </div>
+                    <div class="timeline-body">
+                        <p>Computer scientist <strong style="color: var(--obt-white);">Nick Szabo</strong> coined the term "smart contract" in 1994. He envisioned digital protocols that could execute the terms of a contract automatically.</p>
+                        <p>His idea remained theoretical until <strong style="color: var(--obt-white);">Ethereum launched in 2015</strong>, providing a blockchain platform capable of running arbitrary code &mdash; making smart contracts a reality.</p>
+                    </div>
+                </div>
+                <div class="timeline-card fragment fade-up" style="margin-top: 0.5em;">
+                    <div class="timeline-header">
+                        <div class="timeline-icon"><i class="fab fa-ethereum"></i></div>
+                        <div class="timeline-meta">
+                            <h4>Ethereum &mdash; The Platform</h4>
+                            <div class="timeline-date">2015 &bull; Vitalik Buterin</div>
+                        </div>
+                    </div>
+                    <div class="timeline-body">
+                        <p>Vitalik Buterin proposed Ethereum as a <strong style="color: var(--obt-white);">"world computer"</strong> &mdash; a blockchain that goes beyond simple transactions. It introduced the <strong style="color: var(--obt-white);">Ethereum Virtual Machine (EVM)</strong> and the <strong style="color: var(--obt-white);">Solidity</strong> programming language.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    The concept of smart contracts was first proposed by Nick Szabo in 1994 — that's even before Bitcoin. But the technology didn't exist to make them work until Ethereum launched in 2015. Vitalik Buterin built Ethereum as a "world computer" that can run these programs.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 6: VENDING MACHINE ANALOGY ==================== -->
+            <section>
+                <h2>The Vending Machine Analogy</h2>
+                <div class="accent-line"></div>
+                <p>Nick Szabo used a <strong style="color: var(--obt-white);">vending machine</strong> as the simplest example of a smart contract:</p>
+                <div class="vending-diagram fragment fade-up">
+                    <div class="vending-side">
+                        <div class="side-icon"><i class="fas fa-store"></i></div>
+                        <h4>Vending Machine</h4>
+                        <div class="side-steps">
+                            <p>Insert coin</p>
+                            <p>Select product</p>
+                            <p>Machine checks payment</p>
+                            <p>Product dispensed automatically</p>
+                            <p>No cashier needed</p>
+                        </div>
+                    </div>
+                    <div class="vending-vs">vs</div>
+                    <div class="vending-side smart">
+                        <div class="side-icon"><i class="fas fa-file-contract"></i></div>
+                        <h4>Smart Contract</h4>
+                        <div class="side-steps">
+                            <p>Send crypto / call function</p>
+                            <p>Specify action</p>
+                            <p>Contract checks conditions</p>
+                            <p>Action executed automatically</p>
+                            <p>No intermediary needed</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="success-box fragment fade-up" style="margin-top: 0.6em;">
+                    <h4><i class="fas fa-check-circle"></i> &nbsp;Key Insight</h4>
+                    <p>Both follow the same logic: <strong>IF</strong> correct input is provided, <strong>THEN</strong> execute the predefined action. No trust required — the mechanism guarantees it.</p>
+                </div>
+                <aside class="notes">
+                    The best way to understand smart contracts is through a vending machine. You put in money, select your item, the machine checks if you paid enough, and dispenses the product. No cashier, no trust needed. Smart contracts work exactly the same way — just on a blockchain.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 7: CODE IS LAW ==================== -->
+            <section>
+                <h2>"Code is Law"</h2>
+                <div class="accent-line"></div>
+                <div class="quote-block fragment fade-up" style="margin-top: 0.6em;">
+                    <p>"In the blockchain world, the code of a smart contract IS the agreement. There is no separate legal document — the code defines and enforces the rules."</p>
+                </div>
+                <div class="concept-grid fragment fade-up" style="margin-top: 0.8em;">
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-gavel"></i></div>
+                        <h4>Traditional Contracts</h4>
+                        <p>Written in legal language. Enforced by courts, lawyers, and institutions. Disputes take months.</p>
+                    </div>
+                    <div class="concept-card" style="border-color: rgba(217,30,42,0.3); background: rgba(217,30,42,0.05);">
+                        <div class="card-icon"><i class="fas fa-code"></i></div>
+                        <h4>Smart Contracts</h4>
+                        <p>Written in code. Enforced by the blockchain automatically. Execution is instant and guaranteed.</p>
+                    </div>
+                </div>
+                <div class="warning-box fragment fade-up" style="margin-top: 0.6em;">
+                    <h4><i class="fas fa-exclamation-triangle"></i> &nbsp;The Double-Edged Sword</h4>
+                    <p>If the code has a bug, the bug is also "law." This is why smart contract auditing and security are critically important.</p>
+                </div>
+                <aside class="notes">
+                    "Code is Law" is a fundamental philosophy in blockchain. Unlike traditional contracts enforced by courts, smart contracts enforce themselves through code. But here's the catch — if the code has a bug, the bug is also enforced. That's why security auditing is so important.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 8: TRADITIONAL vs SMART ==================== -->
+            <section>
+                <h2>Traditional vs Smart Contract</h2>
+                <div class="accent-line"></div>
+                <div class="comparison-grid-2 fragment fade-up">
+                    <div class="comparison-box">
+                        <div class="icon"><i class="fas fa-file-signature"></i></div>
+                        <h4>Traditional Agreement</h4>
+                        <p style="text-align: left; margin-top: 0.5em;">
+                            <i class="fas fa-clock" style="color: var(--obt-gray); margin-right: 4px;"></i> Days to weeks to execute<br>
+                            <i class="fas fa-users" style="color: var(--obt-gray); margin-right: 4px;"></i> Requires intermediaries<br>
+                            <i class="fas fa-dollar-sign" style="color: var(--obt-gray); margin-right: 4px;"></i> High transaction costs<br>
+                            <i class="fas fa-question-circle" style="color: var(--obt-gray); margin-right: 4px;"></i> Ambiguity possible<br>
+                            <i class="fas fa-map-marker-alt" style="color: var(--obt-gray); margin-right: 4px;"></i> Jurisdiction-dependent
+                        </p>
+                    </div>
+                    <div class="comparison-box active">
+                        <div class="icon"><i class="fas fa-file-code"></i></div>
+                        <h4>Smart Contract</h4>
+                        <p style="text-align: left; margin-top: 0.5em;">
+                            <i class="fas fa-bolt" style="color: var(--obt-red); margin-right: 4px;"></i> Executes in seconds<br>
+                            <i class="fas fa-robot" style="color: var(--obt-red); margin-right: 4px;"></i> Fully automated<br>
+                            <i class="fas fa-coins" style="color: var(--obt-red); margin-right: 4px;"></i> Minimal gas fees<br>
+                            <i class="fas fa-check-circle" style="color: var(--obt-red); margin-right: 4px;"></i> Deterministic logic<br>
+                            <i class="fas fa-globe" style="color: var(--obt-red); margin-right: 4px;"></i> Borderless
+                        </p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Here's a side-by-side comparison. Traditional agreements take days, require lawyers and banks, are expensive, can be ambiguous, and depend on jurisdiction. Smart contracts execute in seconds, are fully automated, cost minimal gas fees, have deterministic logic, and are borderless.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 9: SECTION 02 TITLE ==================== -->
+            <section class="section-title">
+                <div class="section-number">SECTION 02</div>
+                <h2>How Do They Run Automatically?</h2>
+                <p class="section-subtitle">EVM, lifecycle, gas fees, and Solidity</p>
+                <aside class="notes">
+                    Now let's look under the hood. How does a smart contract actually run? What makes it tick?
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 10: EVM ==================== -->
+            <section>
+                <h2>The Ethereum Virtual Machine</h2>
+                <div class="accent-line"></div>
+                <p>The <strong style="color: var(--obt-white);">EVM</strong> is the runtime environment where smart contracts execute &mdash; think of it as a global, decentralized computer.</p>
+                <div class="concept-grid fragment fade-up" style="margin-top: 0.6em;">
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-server"></i></div>
+                        <h4>Runs on Every Node</h4>
+                        <p>Every Ethereum node runs the EVM simultaneously, ensuring consensus on the outcome.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h4>Sandboxed Environment</h4>
+                        <p>Contracts run in isolation. They can't access the internet, file system, or other processes.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-calculator"></i></div>
+                        <h4>Deterministic</h4>
+                        <p>Same input always produces the same output. No randomness, no surprises.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-cubes"></i></div>
+                        <h4>Turing Complete</h4>
+                        <p>Can compute anything that is computable — loops, conditions, data storage, and more.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    The EVM is like a global, decentralized computer. Every Ethereum node runs it simultaneously. It's sandboxed — contracts can't access the internet or file system. It's deterministic — same input always gives same output. And it's Turing complete — meaning it can compute anything.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 11: LIFECYCLE ==================== -->
+            <section>
+                <h2>Smart Contract Lifecycle</h2>
+                <div class="accent-line"></div>
+                <p>From writing to execution &mdash; here's how a smart contract comes to life:</p>
+                <div class="lifecycle-flow fragment fade-up">
+                    <div class="lifecycle-step">
+                        <div class="step-icon"><i class="fas fa-pen-fancy"></i></div>
+                        <h4>Write</h4>
+                        <p>Code in Solidity</p>
+                    </div>
+                    <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="lifecycle-step">
+                        <div class="step-icon"><i class="fas fa-cogs"></i></div>
+                        <h4>Compile</h4>
+                        <p>To EVM bytecode</p>
+                    </div>
+                    <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="lifecycle-step">
+                        <div class="step-icon"><i class="fas fa-rocket"></i></div>
+                        <h4>Deploy</h4>
+                        <p>To the blockchain</p>
+                    </div>
+                    <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="lifecycle-step">
+                        <div class="step-icon"><i class="fas fa-play-circle"></i></div>
+                        <h4>Interact</h4>
+                        <p>Call functions</p>
+                    </div>
+                    <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="lifecycle-step">
+                        <div class="step-icon"><i class="fas fa-check-double"></i></div>
+                        <h4>Verify</h4>
+                        <p>On block explorer</p>
+                    </div>
+                </div>
+                <div class="warning-box fragment fade-up" style="margin-top: 0.8em;">
+                    <h4><i class="fas fa-info-circle"></i> &nbsp;Important</h4>
+                    <p>Once deployed, the contract gets a unique <strong>address</strong> on the blockchain. Anyone can interact with its public functions by sending transactions to that address.</p>
+                </div>
+                <aside class="notes">
+                    The lifecycle is: Write the contract in Solidity, compile it to bytecode the EVM can understand, deploy it to the blockchain (which costs gas), then anyone can interact with it by calling its functions, and finally you can verify all transactions on a block explorer like Etherscan.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 12: GAS FEES ==================== -->
+            <section>
+                <h2>Gas Fees Explained</h2>
+                <div class="accent-line"></div>
+                <p><strong style="color: var(--obt-white);">Gas</strong> is the unit that measures the computational effort required to execute operations on Ethereum.</p>
+                <div class="gas-diagram fragment fade-up">
+                    <div class="gas-side">
+                        <div class="gas-icon"><i class="fas fa-gas-pump"></i></div>
+                        <h4>Real-World Analogy</h4>
+                        <p>Your car needs fuel to drive</p>
+                        <p>More distance = more fuel</p>
+                        <p>Fuel price varies by market</p>
+                        <p>No fuel = car stops</p>
+                    </div>
+                    <div class="gas-side" style="border-color: rgba(217,30,42,0.2);">
+                        <div class="gas-icon"><i class="fab fa-ethereum"></i></div>
+                        <h4>Ethereum Gas</h4>
+                        <p>Contracts need gas to execute</p>
+                        <p>More computation = more gas</p>
+                        <p>Gas price varies by demand</p>
+                        <p>Out of gas = transaction reverts</p>
+                    </div>
+                </div>
+                <div class="success-box fragment fade-up" style="margin-top: 0.6em;">
+                    <h4><i class="fas fa-lightbulb"></i> &nbsp;Why Gas Exists</h4>
+                    <p>Gas prevents infinite loops and spam. Every computation costs money, so developers write <strong>efficient code</strong> and users pay fair prices for network resources.</p>
+                </div>
+                <aside class="notes">
+                    Gas is like fuel for your car. Your car needs fuel to drive — the more distance, the more fuel. Similarly, contracts need gas to execute — the more computation, the more gas. Gas prices vary by network demand, and if you run out of gas, the transaction reverts. Gas exists to prevent spam and infinite loops.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 13: SOLIDITY EXAMPLE ==================== -->
+            <section>
+                <h2>A Simple Smart Contract</h2>
+                <div class="accent-line"></div>
+                <div class="annotated-code fragment fade-up">
+                    <div class="code-block">
+                        <div class="code-header">SimpleStorage.sol</div>
+<pre><span class="code-comment">// SPDX-License-Identifier: MIT</span>
+<span class="code-keyword">pragma</span> <span class="code-type">solidity</span> ^<span class="code-number">0.8.0</span>;
+
+<span class="code-keyword">contract</span> <span class="code-type">SimpleStorage</span> {
+
+    <span class="code-type">uint256</span> <span class="code-keyword">private</span> <span class="code-variable">storedValue</span>;  <span class="code-comment">// ① State variable</span>
+
+    <span class="code-keyword">event</span> <span class="code-function">ValueChanged</span>(
+        <span class="code-type">uint256</span> newValue            <span class="code-comment">// ② Event</span>
+    );
+
+    <span class="code-keyword">function</span> <span class="code-function">set</span>(<span class="code-type">uint256</span> _value)
+        <span class="code-keyword">public</span> {                    <span class="code-comment">// ③ Write</span>
+        <span class="code-variable">storedValue</span> <span class="code-operator">=</span> _value;
+        <span class="code-keyword">emit</span> <span class="code-function">ValueChanged</span>(_value);
+    }
+
+    <span class="code-keyword">function</span> <span class="code-function">get</span>()
+        <span class="code-keyword">public</span> <span class="code-keyword">view</span>
+        <span class="code-keyword">returns</span> (<span class="code-type">uint256</span>) {         <span class="code-comment">// ④ Read</span>
+        <span class="code-keyword">return</span> <span class="code-variable">storedValue</span>;
+    }
+}</pre>
+                    </div>
+                    <div class="annotation-list">
+                        <div class="annotation-item">
+                            <div class="ann-num">1</div>
+                            <p><strong style="color: var(--obt-white);">State Variable</strong> — Data stored permanently on the blockchain. Like a database field that everyone can verify.</p>
+                        </div>
+                        <div class="annotation-item">
+                            <div class="ann-num">2</div>
+                            <p><strong style="color: var(--obt-white);">Event</strong> — Emits a log when the value changes. Front-ends can listen for these to update the UI.</p>
+                        </div>
+                        <div class="annotation-item">
+                            <div class="ann-num">3</div>
+                            <p><strong style="color: var(--obt-white);">Write Function</strong> — Changes blockchain state. Requires a transaction and costs gas.</p>
+                        </div>
+                        <div class="annotation-item">
+                            <div class="ann-num">4</div>
+                            <p><strong style="color: var(--obt-white);">Read Function</strong> — Only reads data. Marked as <code style="color: var(--obt-red); font-family: 'JetBrains Mono', monospace; font-size: 0.9em;">view</code>, so it's free — no gas needed.</p>
+                        </div>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Here's the simplest possible smart contract — it stores a number. It has a state variable that lives on the blockchain, an event that notifies when the value changes, a set function that writes data (costs gas), and a get function that reads data (free). This is the foundation of all smart contracts.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 14: SECTION 03 TITLE ==================== -->
+            <section class="section-title">
+                <div class="section-number">SECTION 03</div>
+                <h2>Advantages & Disadvantages</h2>
+                <p class="section-subtitle">The good, the bad, and the DAO hack</p>
+                <aside class="notes">
+                    Smart contracts are powerful, but they're not perfect. Let's look at the advantages, the disadvantages, and one of the most famous disasters in blockchain history — the DAO hack.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 15: ADVANTAGES ==================== -->
+            <section>
+                <h2>Advantages</h2>
+                <div class="accent-line"></div>
+                <div class="concept-grid">
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-handshake-slash"></i></div>
+                        <h4>Trustless Execution</h4>
+                        <p>No need to trust a bank, lawyer, or any third party. The code enforces the agreement.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-eye"></i></div>
+                        <h4>Full Transparency</h4>
+                        <p>Contract code and all transactions are publicly visible on the blockchain for anyone to audit.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                        <h4>Speed & Efficiency</h4>
+                        <p>Transactions settle in seconds to minutes, not days. No paperwork, no waiting periods.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
+                        <h4>Cost Reduction</h4>
+                        <p>Eliminates intermediary fees. Only pay minimal gas costs for blockchain computation.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-globe"></i></div>
+                        <h4>Global Access</h4>
+                        <p>Anyone with an internet connection can interact. No geographic or institutional barriers.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h4>Censorship Resistant</h4>
+                        <p>No single entity can shut down or modify a deployed contract. It runs as long as the chain exists.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    The advantages are significant: trustless execution without intermediaries, full transparency, fast settlement, lower costs, global access for anyone with internet, and censorship resistance — no single entity can shut down a deployed contract.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 16: DISADVANTAGES ==================== -->
+            <section>
+                <h2>Disadvantages</h2>
+                <div class="accent-line"></div>
+                <div class="concept-grid">
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-bug" style="color: var(--obt-red-dim);"></i></div>
+                        <h4>Bugs Are Permanent</h4>
+                        <p>Immutability means bugs can't be patched easily. A flaw in the code can lead to catastrophic losses.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-unlink" style="color: var(--obt-red-dim);"></i></div>
+                        <h4>Oracle Problem</h4>
+                        <p>Smart contracts can't access real-world data natively. They rely on "oracles" — which can be manipulated.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-graduation-cap" style="color: var(--obt-red-dim);"></i></div>
+                        <h4>Steep Learning Curve</h4>
+                        <p>Writing secure Solidity code requires deep understanding of blockchain mechanics and security patterns.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-balance-scale" style="color: var(--obt-red-dim);"></i></div>
+                        <h4>Legal Uncertainty</h4>
+                        <p>Most jurisdictions don't yet recognize smart contracts as legally binding agreements.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-tachometer-alt" style="color: var(--obt-red-dim);"></i></div>
+                        <h4>Scalability Issues</h4>
+                        <p>Complex contracts consume significant gas. High network congestion can make transactions expensive.</p>
+                    </div>
+                    <div class="concept-card fragment fade-up">
+                        <div class="card-icon"><i class="fas fa-undo-alt" style="color: var(--obt-red-dim);"></i></div>
+                        <h4>No Reversibility</h4>
+                        <p>Transactions are final. Sent funds to the wrong address? There's no "undo" button.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    The disadvantages: bugs are permanent and can be catastrophic, the oracle problem means contracts can't natively access real-world data, there's a steep learning curve, legal uncertainty, scalability issues with gas costs, and no way to reverse a transaction.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 17: DAO HACK ==================== -->
+            <section>
+                <h2>The DAO Hack &mdash; A Lesson</h2>
+                <div class="accent-line"></div>
+                <div class="timeline-card fragment fade-up">
+                    <div class="timeline-header">
+                        <div class="timeline-icon"><i class="fas fa-skull-crossbones"></i></div>
+                        <div class="timeline-meta">
+                            <h4>The DAO Attack</h4>
+                            <div class="timeline-date">June 17, 2016</div>
+                        </div>
+                    </div>
+                    <div class="timeline-body">
+                        <p>The DAO (Decentralized Autonomous Organization) was a smart contract-based investment fund on Ethereum. It raised <strong style="color: var(--obt-white);">$150 million</strong> in ETH — the largest crowdfund at the time.</p>
+                        <p>An attacker exploited a <strong style="color: var(--obt-red);">reentrancy bug</strong> in the contract's withdrawal function, draining <strong style="color: var(--obt-red);">$60 million</strong> worth of ETH by recursively calling the withdraw function before the balance was updated.</p>
+                    </div>
+                    <div class="timeline-stats">
+                        <div class="timeline-stat">
+                            <div class="stat-value">$150M</div>
+                            <div class="stat-label">Raised</div>
+                        </div>
+                        <div class="timeline-stat">
+                            <div class="stat-value">$60M</div>
+                            <div class="stat-label">Stolen</div>
+                        </div>
+                        <div class="timeline-stat">
+                            <div class="stat-value">1</div>
+                            <div class="stat-label">Bug exploited</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="warning-box fragment fade-up" style="margin-top: 0.5em;">
+                    <h4><i class="fas fa-exclamation-triangle"></i> &nbsp;The Aftermath</h4>
+                    <p>This led to a controversial <strong>hard fork</strong> of Ethereum to reverse the hack, splitting the chain into <strong>Ethereum (ETH)</strong> and <strong>Ethereum Classic (ETC)</strong>. It remains the most important lesson in smart contract security.</p>
+                </div>
+                <aside class="notes">
+                    The DAO hack is the most famous smart contract disaster. In 2016, someone exploited a reentrancy bug to drain $60 million from a $150 million fund. This led to Ethereum hard-forking to reverse the hack, which is why we have both Ethereum and Ethereum Classic today. One single bug — catastrophic consequences.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 18: KEY TAKEAWAY ==================== -->
+            <section>
+                <h2>Key Takeaway</h2>
+                <div class="accent-line"></div>
+                <div class="pros-cons-grid fragment fade-up" style="margin-top: 0.8em;">
+                    <div class="pros-column">
+                        <h4><i class="fas fa-check-circle"></i> &nbsp;Smart Contracts Excel At</h4>
+                        <ul>
+                            <li>Automating trustless transactions</li>
+                            <li>Reducing costs by removing middlemen</li>
+                            <li>Creating transparent, auditable systems</li>
+                            <li>Enabling global, permissionless access</li>
+                        </ul>
+                    </div>
+                    <div class="cons-column">
+                        <h4><i class="fas fa-times-circle"></i> &nbsp;But Require Caution With</h4>
+                        <ul>
+                            <li>Security auditing before deployment</li>
+                            <li>Handling external data via oracles</li>
+                            <li>Gas optimization for cost efficiency</li>
+                            <li>Understanding legal implications</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="quote-block fragment fade-up" style="margin-top: 0.8em;">
+                    <p>"With great power comes great responsibility. Write secure code, audit thoroughly, and test relentlessly."</p>
+                </div>
+                <aside class="notes">
+                    The bottom line: smart contracts are incredibly powerful for automation, cost reduction, transparency, and global access. But they require extreme caution — always audit, always test, always think about security.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 19: SECTION 04 TITLE ==================== -->
+            <section class="section-title">
+                <div class="section-number">SECTION 04</div>
+                <h2>Real-World Use Cases</h2>
+                <p class="section-subtitle">Where smart contracts are making a difference today</p>
+                <aside class="notes">
+                    Now let's see where smart contracts are actually being used in the real world. From finance to supply chains, the applications are growing rapidly.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 20: DEFI ==================== -->
+            <section>
+                <h2>DeFi &mdash; Decentralized Finance</h2>
+                <div class="accent-line"></div>
+                <p>The largest use case for smart contracts, replacing traditional financial services.</p>
+                <div class="concept-grid fragment fade-up" style="margin-top: 0.5em;">
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-exchange-alt"></i></div>
+                        <h4>Decentralized Exchanges</h4>
+                        <p>Uniswap, SushiSwap &mdash; trade tokens directly with other users, no exchange needed.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                        <h4>Lending & Borrowing</h4>
+                        <p>Aave, Compound &mdash; lend your crypto and earn interest, or borrow against your assets.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-coins"></i></div>
+                        <h4>Stablecoins</h4>
+                        <p>DAI, USDC &mdash; crypto tokens pegged to real currencies, managed by smart contracts.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-water"></i></div>
+                        <h4>Liquidity Pools</h4>
+                        <p>Provide liquidity to DEXs and earn trading fees automatically through smart contracts.</p>
+                    </div>
+                </div>
+                <div class="success-box fragment fade-up" style="margin-top: 0.5em;">
+                    <h4><i class="fas fa-chart-line"></i> &nbsp;DeFi by Numbers</h4>
+                    <p>DeFi protocols collectively manage <strong>billions of dollars</strong> in total value locked (TVL) &mdash; all governed by smart contracts, not banks.</p>
+                </div>
+                <aside class="notes">
+                    DeFi is the biggest application of smart contracts. Decentralized exchanges like Uniswap let you trade without a centralized exchange. Lending platforms like Aave let you earn interest or borrow. Stablecoins like DAI are managed by contracts. And liquidity pools let you earn trading fees. Billions of dollars are managed by code, not banks.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 21: NFTs & GAMING ==================== -->
+            <section>
+                <h2>NFTs, Gaming & Digital Ownership</h2>
+                <div class="accent-line"></div>
+                <div class="concept-grid fragment fade-up" style="margin-top: 0.5em;">
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-palette"></i></div>
+                        <h4>Digital Art & Collectibles</h4>
+                        <p>NFTs prove ownership of unique digital items. Artists can sell directly and earn royalties automatically.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-gamepad"></i></div>
+                        <h4>Gaming Assets</h4>
+                        <p>In-game items as NFTs that players truly own. Trade swords, skins, and land across games.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-music"></i></div>
+                        <h4>Music & Royalties</h4>
+                        <p>Musicians can tokenize songs and automatically distribute royalties to all collaborators via smart contracts.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="card-icon"><i class="fas fa-certificate"></i></div>
+                        <h4>Certificates & Credentials</h4>
+                        <p>Universities and organizations can issue verifiable certificates as NFTs on the blockchain.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    NFTs are smart contracts that represent unique digital items. Artists can sell work and automatically receive royalties on resales. Gamers can truly own their in-game items. Musicians can distribute royalties automatically. And certificates can be issued as verifiable blockchain tokens.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 22: SUPPLY CHAIN, INSURANCE, VOTING ==================== -->
+            <section>
+                <h2>Beyond Finance</h2>
+                <div class="accent-line"></div>
+                <div class="usecase-grid fragment fade-up">
+                    <div class="usecase-card">
+                        <div class="usecase-icon"><i class="fas fa-truck"></i></div>
+                        <h4>Supply Chain</h4>
+                        <p>Track products from factory to consumer. Verify authenticity and origin. Walmart, Maersk use blockchain for food safety.</p>
+                    </div>
+                    <div class="usecase-card">
+                        <div class="usecase-icon"><i class="fas fa-umbrella"></i></div>
+                        <h4>Insurance</h4>
+                        <p>Parametric insurance: if flight is delayed &gt;2hrs, payout triggers automatically. No claims process.</p>
+                    </div>
+                    <div class="usecase-card">
+                        <div class="usecase-icon"><i class="fas fa-vote-yea"></i></div>
+                        <h4>Voting & Governance</h4>
+                        <p>DAOs use smart contracts for transparent voting. Every vote is on-chain, verifiable, and tamper-proof.</p>
+                    </div>
+                    <div class="usecase-card">
+                        <div class="usecase-icon"><i class="fas fa-home"></i></div>
+                        <h4>Real Estate</h4>
+                        <p>Tokenize property ownership. Enable fractional ownership and automated rent distribution.</p>
+                    </div>
+                    <div class="usecase-card">
+                        <div class="usecase-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h4>Healthcare</h4>
+                        <p>Secure patient data sharing between providers. Patients control who accesses their medical records.</p>
+                    </div>
+                    <div class="usecase-card">
+                        <div class="usecase-icon"><i class="fas fa-solar-panel"></i></div>
+                        <h4>Energy Trading</h4>
+                        <p>Peer-to-peer energy markets. Sell excess solar energy to neighbors via smart contracts.</p>
+                    </div>
+                </div>
+                <aside class="notes">
+                    Smart contracts go far beyond finance. Supply chain tracking for product authenticity. Parametric insurance with automatic payouts. DAO governance with on-chain voting. Tokenized real estate. Healthcare data management. And peer-to-peer energy trading. The possibilities are enormous.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 23: SECTION 05 TITLE ==================== -->
+            <section class="section-title">
+                <div class="section-number">SECTION 05</div>
+                <h2>Visualization & Demo</h2>
+                <p class="section-subtitle">See a smart contract in action</p>
+                <aside class="notes">
+                    Now for the fun part — let's see a smart contract in action. I'll walk you through how to read, deploy, and interact with a real contract using Remix IDE.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 24: HOW TO READ A CONTRACT ==================== -->
+            <section>
+                <h2>How to Read a Smart Contract</h2>
+                <div class="accent-line"></div>
+                <div class="step-grid fragment fade-up">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>License & Version</h4>
+                        <p>Every contract starts with SPDX license and the Solidity version (pragma).</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>State Variables</h4>
+                        <p>Data stored on-chain. These are the contract's "database fields."</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>Functions</h4>
+                        <p>The actions a contract can perform. Public, private, view, or payable.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h4>Events & Modifiers</h4>
+                        <p>Events log actions. Modifiers add conditions (like "only the owner can call this").</p>
+                    </div>
+                </div>
+                <div class="code-block fragment fade-up" style="margin-top: 0.6em;">
+                    <div class="code-header">Key Function Visibility Keywords</div>
+<pre><span class="code-keyword">public</span>    <span class="code-comment">→ Anyone can call this function</span>
+<span class="code-keyword">private</span>   <span class="code-comment">→ Only this contract can call it</span>
+<span class="code-keyword">view</span>      <span class="code-comment">→ Reads data only (free, no gas)</span>
+<span class="code-keyword">payable</span>   <span class="code-comment">→ Can receive ETH with the call</span>
+<span class="code-keyword">external</span>  <span class="code-comment">→ Only callable from outside the contract</span></pre>
+                </div>
+                <aside class="notes">
+                    When reading a smart contract, start with the license and version at the top. Then look at state variables — these are the data stored on-chain. Then the functions — the actions the contract can perform. And finally events and modifiers. Key visibility keywords: public means anyone can call it, view means it only reads data, payable means it can receive ETH.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 25: REMIX IDE DEMO ==================== -->
+            <section>
+                <h2>Live Demo with Remix IDE</h2>
+                <div class="accent-line"></div>
+                <p>Remix is a browser-based IDE for writing, compiling, and deploying smart contracts.</p>
+                <div class="step-grid fragment fade-up" style="margin-top: 0.6em;">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>Open Remix</h4>
+                        <p>Go to remix.ethereum.org in your browser. No installation needed.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>Write Contract</h4>
+                        <p>Create a new .sol file and paste our SimpleStorage contract code.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>Compile</h4>
+                        <p>Click the Solidity compiler tab and hit "Compile." Green check = success.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h4>Deploy & Interact</h4>
+                        <p>Deploy to JavaScript VM (test environment). Call set() and get() functions.</p>
+                    </div>
+                </div>
+                <div class="code-block fragment fade-up" style="margin-top: 0.6em;">
+                    <div class="code-header">remix.ethereum.org</div>
+<pre><span class="code-comment">// Try these interactions after deploying:</span>
+
+<span class="code-function">set</span>(<span class="code-number">42</span>)       <span class="code-comment">→ Stores the value 42 on-chain (costs gas)</span>
+<span class="code-function">get</span>()         <span class="code-comment">→ Returns 42 (free, no gas)</span>
+<span class="code-function">set</span>(<span class="code-number">100</span>)      <span class="code-comment">→ Updates the value to 100</span>
+<span class="code-function">get</span>()         <span class="code-comment">→ Returns 100</span></pre>
+                </div>
+                <aside class="notes">
+                    Let me now switch to Remix IDE and show you this live. Remix runs in your browser — no installation needed. We'll create a file, paste our SimpleStorage code, compile it, deploy it to a test environment, and then interact with the set and get functions. Watch how the state changes on each call.
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 26: RECAP ==================== -->
+            <section>
+                <h2>What We Learned Today</h2>
+                <div class="accent-line"></div>
+                <div class="recap-grid">
+                    <div class="recap-card fragment fade-up">
+                        <div class="recap-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <h4>Smart Contract Basics</h4>
+                            <p>Self-executing programs on the blockchain that enforce agreements without intermediaries.</p>
+                        </div>
+                    </div>
+                    <div class="recap-card fragment fade-up">
+                        <div class="recap-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <h4>How They Execute</h4>
+                            <p>The EVM runs contracts on every node. Write → Compile → Deploy → Interact → Verify.</p>
+                        </div>
+                    </div>
+                    <div class="recap-card fragment fade-up">
+                        <div class="recap-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <h4>Pros & Cons</h4>
+                            <p>Powerful for automation and trust, but require security auditing and careful development.</p>
+                        </div>
+                    </div>
+                    <div class="recap-card fragment fade-up">
+                        <div class="recap-icon"><i class="fas fa-check-circle"></i></div>
+                        <div>
+                            <h4>Real-World Impact</h4>
+                            <p>DeFi, NFTs, supply chain, insurance, voting, real estate — and this is just the beginning.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="success-box fragment fade-up" style="margin-top: 0.6em;">
+                    <h4><i class="fas fa-rocket"></i> &nbsp;What's Next?</h4>
+                    <p>In the next Blockchain 101 session, we'll go deeper &mdash; writing your own smart contracts and deploying them to a live testnet!</p>
+                </div>
+                <aside class="notes">
+                    Let's recap what we covered: what smart contracts are, how they execute on the EVM, the advantages and disadvantages including the DAO hack lesson, and real-world use cases from DeFi to supply chain. In our next session, we'll go hands-on and write our own contracts!
+                </aside>
+            </section>
+
+            <!-- ==================== SLIDE 27: CLOSING ==================== -->
+            <section class="closing-slide">
+                <div class="logo-container" style="margin-bottom: 1em;">
+                    <img src="assets/obt-logo-text.png" alt="OBT Logo" style="height: 70px;">
+                </div>
+                <h2>Thank You!</h2>
+                <p class="closing-subtitle">Questions, ideas, or feedback?</p>
+                <div class="social-links">
+                    <div class="social-link">
+                        <i class="fab fa-twitter"></i>
+                        <span>@odtublockchain</span>
+                    </div>
+                    <div class="social-link">
+                        <i class="fab fa-instagram"></i>
+                        <span>@odtublockchain</span>
+                    </div>
+                    <div class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                        <span>ODTU Blockchain</span>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5em; font-family: 'JetBrains Mono', monospace; font-size: 0.6em; color: var(--obt-gray);">
+                    Blockchain 101 &bull; Episode 2 &bull; March 2026
+                </p>
+                <aside class="notes">
+                    Thank you all for coming! If you have questions, now's the time. You can also reach us on social media. See you at the next Blockchain 101 session!
+                </aside>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            width: 1280,
+            height: 720,
+            margin: 0,
+            transition: 'fade',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            center: false,
+            showNotes: false,
+            pdfSeparateFragments: false,
+        });
+    </script>
+</body>
+</html>
