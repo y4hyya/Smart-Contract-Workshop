@@ -1,0 +1,178 @@
+<!-- ==================== SLIDE 3: SECTION 01 TITLE ==================== -->
+<section class="section-title">
+    <div class="section-number">BÖLÜM 01</div>
+    <h2>Akıllı Kontrat Nedir?</h2>
+    <p class="section-subtitle">Tanım, tarihçe ve "Code is Law" felsefesi</p>
+    <aside class="notes">
+        Let's start with the basics. What exactly is a smart contract, where did the idea come from, and why do people say "Code is Law"?
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 4: DEFINITION ==================== -->
+<section>
+    <h2>Akıllı Kontrat &mdash; Tanım</h2>
+    <div class="accent-line"></div>
+    <h3 style="margin-top: 0.4em;">Blokzincir üzerinde saklanan, kendi kendini yürüten bir program</h3>
+    <p style="margin-top: 0.3em;">
+        Akıllı kontrat, önceden belirlenen koşullar sağlandığında <strong style="color: var(--obt-white);">bir anlaşmanın şartlarını otomatik olarak uygulayan</strong> bir kod parçasıdır &mdash; herhangi bir aracıya ihtiyaç duymadan.
+    </p>
+    <div class="concept-grid fragment fade-up" style="margin-top: 0.8em;">
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-robot"></i></div>
+            <h4>Kendi Kendini Yürütür</h4>
+            <p>Koşullar tetiklendiğinde otomatik olarak çalışır. İnsan müdahalesine gerek yoktur.</p>
+        </div>
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-lock"></i></div>
+            <h4>Varsayılan Olarak Değiştirilemez</h4>
+            <p>Bir kez yayınlandıktan sonra kod varsayılan olarak değiştirilemez. Yükseltilebilir proxy kalıpları mevcuttur, ancak bilinçli tasarım gerektirir.</p>
+        </div>
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-eye"></i></div>
+            <h4>Şeffaf</h4>
+            <p>Herkes kontrat kodunu inceleyebilir ve mantığını zincir üzerinde doğrulayabilir.</p>
+        </div>
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-handshake-slash"></i></div>
+            <h4>Güvensiz Ortamda Güvenli</h4>
+            <p>Üçüncü bir tarafa güvenmeye gerek yok. Sonucu kod garanti eder.</p>
+        </div>
+    </div>
+    <aside class="notes">
+        Think of a smart contract as a program that lives on the blockchain. It has four key properties: it executes itself, it can't be changed once deployed, anyone can read it, and you don't need to trust any middleman because the code handles everything.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 5: NICK SZABO ==================== -->
+<section>
+    <h2>Kısa Bir Tarihçe</h2>
+    <div class="accent-line"></div>
+    <div class="timeline-card fragment fade-up">
+        <div class="timeline-header">
+            <div class="timeline-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="timeline-meta">
+                <h4>Nick Szabo &mdash; Kavramın Mucidi</h4>
+                <div class="timeline-date">1994 &bull; Bitcoin'den bile önce</div>
+            </div>
+        </div>
+        <div class="timeline-body">
+            <p>Bilgisayar bilimci <strong style="color: var(--obt-white);">Nick Szabo</strong>, 1994 yılında "akıllı kontrat" terimini ortaya attı. Bir sözleşmenin şartlarını otomatik olarak yürütebilecek dijital protokoller hayal etti.</p>
+            <p>Bitcoin de sınırlı betik yetenekleri sunuyordu (multi-sig, timelock), ancak genel amaçlı akıllı kontratlar <strong style="color: var(--obt-white);">Ethereum'un 2015'te</strong> piyasaya sürülmesine kadar mümkün olmadı.</p>
+        </div>
+    </div>
+    <div class="timeline-card fragment fade-up" style="margin-top: 0.5em;">
+        <div class="timeline-header">
+            <div class="timeline-icon"><i class="fab fa-ethereum"></i></div>
+            <div class="timeline-meta">
+                <h4>Ethereum &mdash; Platform</h4>
+                <div class="timeline-date">2015 &bull; Vitalik Buterin</div>
+            </div>
+        </div>
+        <div class="timeline-body">
+            <p>Vitalik Buterin, Ethereum'u bir <strong style="color: var(--obt-white);">"dünya bilgisayarı"</strong> olarak önerdi &mdash; basit transferlerin ötesine geçen bir blokzincir. <strong style="color: var(--obt-white);">Ethereum Sanal Makinesi (EVM)</strong> ve <strong style="color: var(--obt-white);">Solidity</strong> programlama dilini tanıttı.</p>
+        </div>
+    </div>
+    <aside class="notes">
+        The concept of smart contracts was first proposed by Nick Szabo in 1994 — that's even before Bitcoin. But the technology didn't exist to make them work until Ethereum launched in 2015. Vitalik Buterin built Ethereum as a "world computer" that can run these programs.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 6: VENDING MACHINE ANALOGY ==================== -->
+<section>
+    <h2>Otomat Makinesi Analojisi</h2>
+    <div class="accent-line"></div>
+    <p>Nick Szabo, akıllı kontratı açıklamak için en basit örnek olarak <strong style="color: var(--obt-white);">otomat makinesini</strong> kullandı:</p>
+    <div class="vending-diagram fragment fade-up">
+        <div class="vending-side">
+            <div class="side-icon"><i class="fas fa-store"></i></div>
+            <h4>Otomat Makinesi</h4>
+            <div class="side-steps">
+                <p>Para at</p>
+                <p>Ürünü seç</p>
+                <p>Makine ödemeyi kontrol eder</p>
+                <p>Ürün otomatik olarak verilir</p>
+                <p>Kasiyere gerek yok</p>
+            </div>
+        </div>
+        <div class="vending-vs">vs</div>
+        <div class="vending-side smart">
+            <div class="side-icon"><i class="fas fa-file-contract"></i></div>
+            <h4>Akıllı Kontrat</h4>
+            <div class="side-steps">
+                <p>Kripto gönder / fonksiyon çağır</p>
+                <p>İşlemi belirt</p>
+                <p>Kontrat koşulları kontrol eder</p>
+                <p>İşlem otomatik olarak yürütülür</p>
+                <p>Aracıya gerek yok</p>
+            </div>
+        </div>
+    </div>
+    <div class="success-box fragment fade-up" style="margin-top: 0.6em;">
+        <h4><i class="fas fa-check-circle"></i> &nbsp;Temel Çıkarım</h4>
+        <p>İkisi de aynı mantığı izler: <strong>EĞER</strong> doğru girdi sağlanırsa, <strong>O ZAMAN</strong> önceden tanımlanmış işlemi yürüt. Güvene gerek yok &mdash; mekanizma sonucu garanti eder.</p>
+    </div>
+    <aside class="notes">
+        The best way to understand smart contracts is through a vending machine. You put in money, select your item, the machine checks if you paid enough, and dispenses the product. No cashier, no trust needed. Smart contracts work exactly the same way — just on a blockchain.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 7: CODE IS LAW ==================== -->
+<section>
+    <h2>"Kod Kanundur"</h2>
+    <div class="accent-line"></div>
+    <div class="quote-block fragment fade-up" style="margin-top: 0.6em;">
+        <p>"Blokzincir dünyasında, akıllı kontratın kodu anlaşmanın kendisidir. Ayrı bir hukuki belge yoktur &mdash; kuralları tanımlayan ve uygulayan kodun ta kendisidir."</p>
+    </div>
+    <div class="concept-grid fragment fade-up" style="margin-top: 0.8em;">
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-gavel"></i></div>
+            <h4>Geleneksel Sözleşmeler</h4>
+            <p>Hukuk diliyle yazılır. Mahkemeler, avukatlar ve kurumlar tarafından uygulanır. Anlaşmazlıklar aylarca sürer.</p>
+        </div>
+        <div class="concept-card" style="border-color: rgba(217,30,42,0.3); background: rgba(217,30,42,0.05);">
+            <div class="card-icon"><i class="fas fa-code"></i></div>
+            <h4>Akıllı Kontratlar</h4>
+            <p>Kod ile yazılır. Blokzincir tarafından otomatik olarak uygulanır. Yürütme anlık ve garantidir.</p>
+        </div>
+    </div>
+    <div class="warning-box fragment fade-up" style="margin-top: 0.6em;">
+        <h4><i class="fas fa-exclamation-triangle"></i> &nbsp;Çift Taraflı Kılıç</h4>
+        <p>Kodda bir hata varsa, hata da "kanun" olur. Ancak DAO saldırısında (Bölüm 03) göreceğimiz gibi, topluluk hard fork ile bu "kanunu" geçersiz kıldı &mdash; yani gerçekte kod her zaman son söz değildir.</p>
+    </div>
+    <aside class="notes">
+        "Code is Law" is a fundamental philosophy in blockchain. Unlike traditional contracts enforced by courts, smart contracts enforce themselves through code. But here's the catch — if the code has a bug, the bug is also enforced. That's why security auditing is so important.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 8: TRADITIONAL vs SMART ==================== -->
+<section>
+    <h2>Geleneksel vs Akıllı Kontrat</h2>
+    <div class="accent-line"></div>
+    <div class="comparison-grid-2 fragment fade-up">
+        <div class="comparison-box">
+            <div class="icon"><i class="fas fa-file-signature"></i></div>
+            <h4>Geleneksel Anlaşma</h4>
+            <p style="text-align: left; margin-top: 0.5em;">
+                <i class="fas fa-clock" style="color: var(--obt-gray); margin-right: 4px;"></i> Günler hatta haftalar sürer<br>
+                <i class="fas fa-users" style="color: var(--obt-gray); margin-right: 4px;"></i> Aracı kurumlara ihtiyaç duyar<br>
+                <i class="fas fa-dollar-sign" style="color: var(--obt-gray); margin-right: 4px;"></i> Yüksek işlem maliyetleri<br>
+                <i class="fas fa-question-circle" style="color: var(--obt-gray); margin-right: 4px;"></i> Belirsizlik olasılığı<br>
+                <i class="fas fa-map-marker-alt" style="color: var(--obt-gray); margin-right: 4px;"></i> Yargı bölgesine bağımlı
+            </p>
+        </div>
+        <div class="comparison-box active">
+            <div class="icon"><i class="fas fa-file-code"></i></div>
+            <h4>Akıllı Kontrat</h4>
+            <p style="text-align: left; margin-top: 0.5em;">
+                <i class="fas fa-bolt" style="color: var(--obt-red); margin-right: 4px;"></i> Saniyeler içinde yürütülür<br>
+                <i class="fas fa-robot" style="color: var(--obt-red); margin-right: 4px;"></i> Tamamen otomatik<br>
+                <i class="fas fa-coins" style="color: var(--obt-red); margin-right: 4px;"></i> Gas ücreti (ağ durumuna göre değişir)<br>
+                <i class="fas fa-check-circle" style="color: var(--obt-red); margin-right: 4px;"></i> Deterministik mantık<br>
+                <i class="fas fa-globe" style="color: var(--obt-red); margin-right: 4px;"></i> Sınırsız erişim
+            </p>
+        </div>
+    </div>
+    <aside class="notes">
+        Here's a side-by-side comparison. Traditional agreements take days, require lawyers and banks, are expensive, can be ambiguous, and depend on jurisdiction. Smart contracts execute in seconds, are fully automated, cost minimal gas fees, have deterministic logic, and are borderless.
+    </aside>
+</section>

@@ -1,0 +1,97 @@
+<!-- ==================== SLIDE 23: SECTION 05 TITLE ==================== -->
+<section class="section-title">
+    <div class="section-number">BÖLÜM 05</div>
+    <h2>Görselleştirme ve Demo</h2>
+    <p class="section-subtitle">Bir akıllı kontratı çalışırken görün</p>
+    <aside class="notes">
+        Now for the fun part — let's see a smart contract in action. I'll walk you through how to read, deploy, and interact with a real contract using Remix IDE.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 24: HOW TO READ A CONTRACT ==================== -->
+<section>
+    <h2>Akıllı Kontrat Nasıl Okunur?</h2>
+    <div class="accent-line"></div>
+    <div class="step-grid fragment fade-up">
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h4>Lisans ve Versiyon</h4>
+            <p>Her kontrat SPDX lisansı ve Solidity versiyonu (pragma) ile başlar.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h4>Durum Değişkenleri</h4>
+            <p>Zincir üzerinde saklanan veriler. Kontratın "veritabanı alanları" gibi düşünün.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <h4>Fonksiyonlar</h4>
+            <p>Kontratın gerçekleştirebileceği işlemler. Public, private, view veya payable olabilir.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">4</div>
+            <h4>Event'ler ve Modifier'lar</h4>
+            <p>Event'ler işlemleri loglar. Modifier'lar koşul ekler ("sadece sahip çağırabilir" gibi).</p>
+        </div>
+    </div>
+    <div class="comparison-grid-2 fragment fade-up" style="margin-top: 0.6em;">
+        <div class="code-block" style="margin-top: 0;">
+            <div class="code-header">Görünürlük (Visibility)</div>
+<pre><span class="code-keyword">public</span>     <span class="code-comment">→ Herkes çağırabilir</span>
+<span class="code-keyword">external</span>   <span class="code-comment">→ Sadece dışarıdan çağrılabilir</span>
+<span class="code-keyword">internal</span>   <span class="code-comment">→ Kontrat + miras alan kontratlar</span>
+<span class="code-keyword">private</span>    <span class="code-comment">→ Sadece bu kontrat</span></pre>
+        </div>
+        <div class="code-block" style="margin-top: 0;">
+            <div class="code-header">Durum Değiştiriciler (Mutability)</div>
+<pre><span class="code-keyword">view</span>       <span class="code-comment">→ Sadece okur (dışarıdan ücretsiz)</span>
+<span class="code-keyword">pure</span>       <span class="code-comment">→ Ne okur ne yazar</span>
+<span class="code-keyword">payable</span>    <span class="code-comment">→ ETH alabilir</span>
+<span class="code-comment">// (varsayılan)</span> <span class="code-comment">→ Durumu değiştirir, gas harcar</span></pre>
+        </div>
+    </div>
+    <aside class="notes">
+        When reading a smart contract, start with the license and version at the top. Then look at state variables — these are the data stored on-chain. Then the functions — the actions the contract can perform. And finally events and modifiers. Key visibility keywords: public means anyone can call it, view means it only reads data, payable means it can receive ETH.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 25: REMIX IDE DEMO ==================== -->
+<section>
+    <h2>Remix IDE ile Canlı Demo</h2>
+    <div class="accent-line"></div>
+    <p>Remix, akıllı kontrat yazmak, derlemek ve yayınlamak için tarayıcı tabanlı bir geliştirme ortamıdır.</p>
+    <div class="step-grid fragment fade-up" style="margin-top: 0.6em;">
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h4>Remix'i Aç</h4>
+            <p>Tarayıcınızda remix.ethereum.org adresine gidin. Kurulum gerekmez.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h4>Kontratı Yaz</h4>
+            <p>Yeni bir .sol dosyası oluşturun ve SimpleStorage kontrat kodunu yapıştırın.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <h4>Derle</h4>
+            <p>Solidity derleyici sekmesine tıklayıp "Compile" butonuna basın. Yeşil tik = başarılı.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">4</div>
+            <h4>Yayınla ve Etkileşim Kur</h4>
+            <p>Remix VM'e (test ortamı) yayınlayın. set() ve get() fonksiyonlarını çağırın.</p>
+        </div>
+    </div>
+    <div class="code-block fragment fade-up" style="margin-top: 0.6em;">
+        <div class="code-header">remix.ethereum.org</div>
+<pre><span class="code-comment">// Yayınladıktan sonra şu etkileşimleri deneyin:</span>
+
+<span class="code-function">set</span>(<span class="code-number">42</span>)       <span class="code-comment">→ 42 değerini zincire yazar (gas harcar)</span>
+<span class="code-function">get</span>()         <span class="code-comment">→ 42 döner (ücretsiz, gas gerekmez)</span>
+<span class="code-function">set</span>(<span class="code-number">100</span>)      <span class="code-comment">→ Değeri 100 olarak günceller</span>
+<span class="code-function">get</span>()         <span class="code-comment">→ 100 döner</span></pre>
+    </div>
+    <aside class="notes">
+        Let me now switch to Remix IDE and show you this live. Remix runs in your browser — no installation needed. We'll create a file, paste our SimpleStorage code, compile it, deploy it to a test environment, and then interact with the set and get functions. Watch how the state changes on each call.
+    </aside>
+</section>

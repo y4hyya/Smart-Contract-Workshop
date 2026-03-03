@@ -1,0 +1,298 @@
+<!-- ==================== SLIDE 9: SECTION 02 TITLE ==================== -->
+<section class="section-title">
+    <div class="section-number">BÖLÜM 02</div>
+    <h2>Otomatik Olarak Nasıl Çalışır?</h2>
+    <p class="section-subtitle">EVM, yaşam döngüsü, gas ücretleri ve Solidity</p>
+    <aside class="notes">
+        Now let's look under the hood. How does a smart contract actually run? What makes it tick?
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 10: ACCOUNT TYPES ==================== -->
+<section>
+    <h2>İki Hesap Türü</h2>
+    <div class="accent-line"></div>
+    <p>Ethereum'da her şey <strong style="color: var(--obt-white);">hesaplar</strong> aracılığıyla çalışır. İki farklı türü anlamak, akıllı kontratların temelini kavramak demektir.</p>
+    <div class="comparison-grid-2 fragment fade-up" style="margin-top: 0.6em;">
+        <div class="comparison-box">
+            <div class="icon"><i class="fas fa-user"></i></div>
+            <h4>Dışarıdan Sahipli Hesap (EOA)</h4>
+            <p style="text-align: left; margin-top: 0.5em;">
+                <i class="fas fa-key" style="color: var(--obt-gray); margin-right: 4px;"></i> Özel anahtar ile kontrol edilir<br>
+                <i class="fas fa-paper-plane" style="color: var(--obt-gray); margin-right: 4px;"></i> İşlem başlatabilir<br>
+                <i class="fas fa-wallet" style="color: var(--obt-gray); margin-right: 4px;"></i> Ücretsiz oluşturulur<br>
+                <i class="fas fa-ban" style="color: var(--obt-gray); margin-right: 4px;"></i> İçinde kod yoktur
+            </p>
+        </div>
+        <div class="comparison-box active">
+            <div class="icon"><i class="fas fa-file-contract"></i></div>
+            <h4>Kontrat Hesabı</h4>
+            <p style="text-align: left; margin-top: 0.5em;">
+                <i class="fas fa-code" style="color: var(--obt-red); margin-right: 4px;"></i> Kod tarafından kontrol edilir<br>
+                <i class="fas fa-reply" style="color: var(--obt-red); margin-right: 4px;"></i> Sadece işlemlere yanıt verir<br>
+                <i class="fas fa-gas-pump" style="color: var(--obt-red); margin-right: 4px;"></i> Oluşturmak gas harcar<br>
+                <i class="fas fa-cogs" style="color: var(--obt-red); margin-right: 4px;"></i> Kod + depolama içerir
+            </p>
+        </div>
+    </div>
+    <div class="warning-box fragment fade-up" style="margin-top: 0.6em;">
+        <h4><i class="fas fa-info-circle"></i> &nbsp;Her Hesabın 4 Alanı</h4>
+        <p><strong>Nonce</strong> (gönderilen işlem sayısı) &bull; <strong>Balance</strong> (wei cinsinden bakiye) &bull; <strong>CodeHash</strong> (EVM kodu hash'i) &bull; <strong>StorageRoot</strong> (depolama kökü)</p>
+    </div>
+    <aside class="notes">
+        There are two types of accounts on Ethereum. EOAs are controlled by private keys and can initiate transactions — these are regular user wallets. Contract accounts are controlled by code and can only respond to transactions, never initiate them. Every account has four fields: nonce, balance, code hash, and storage root.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 11: EVM ==================== -->
+<section>
+    <h2>Ethereum Sanal Makinesi (EVM)</h2>
+    <div class="accent-line"></div>
+    <p><strong style="color: var(--obt-white);">EVM</strong>, akıllı kontratların çalıştığı ortamdır &mdash; küresel, merkeziyetsiz bir bilgisayar olarak düşünebilirsiniz.</p>
+    <div class="concept-grid fragment fade-up" style="margin-top: 0.6em;">
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-server"></i></div>
+            <h4>Her Düğümde Çalışır</h4>
+            <p>Her Ethereum düğümü EVM'yi eş zamanlı çalıştırır ve sonuç üzerinde uzlaşı sağlar.</p>
+        </div>
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+            <h4>İzole Ortam</h4>
+            <p>Kontratlar izole bir şekilde çalışır. İnternete, dosya sistemine veya diğer süreçlere erişemezler.</p>
+        </div>
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-calculator"></i></div>
+            <h4>Deterministik</h4>
+            <p>Aynı girdi her zaman aynı çıktıyı üretir. Rastgelelik yok, sürpriz yok.</p>
+        </div>
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-cubes"></i></div>
+            <h4>Gas-Sınırlı Turing Tam</h4>
+            <p>Döngüler, koşullar ve veri depolama destekler &mdash; ancak her işlem gas ile sınırlıdır, bu sayede sonsuz döngüler imkansızdır.</p>
+        </div>
+    </div>
+    <aside class="notes">
+        The EVM is like a global, decentralized computer. Every Ethereum node runs it simultaneously. It's sandboxed — contracts can't access the internet or file system. It's deterministic — same input always gives same output. And it's Turing complete — meaning it can compute anything.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 11: LIFECYCLE ==================== -->
+<section>
+    <h2>Akıllı Kontrat Yaşam Döngüsü</h2>
+    <div class="accent-line"></div>
+    <p>Yazımdan yürütmeye &mdash; bir akıllı kontrat şöyle hayata geçer:</p>
+    <div class="lifecycle-flow fragment fade-up">
+        <div class="lifecycle-step">
+            <div class="step-icon"><i class="fas fa-pen-fancy"></i></div>
+            <h4>Yaz</h4>
+            <p>Solidity ile kodla</p>
+        </div>
+        <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="lifecycle-step">
+            <div class="step-icon"><i class="fas fa-cogs"></i></div>
+            <h4>Derle</h4>
+            <p>EVM bytecode'a çevir</p>
+        </div>
+        <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="lifecycle-step">
+            <div class="step-icon"><i class="fas fa-vial"></i></div>
+            <h4>Test Et</h4>
+            <p>Lokal ağda test et</p>
+        </div>
+        <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="lifecycle-step">
+            <div class="step-icon"><i class="fas fa-rocket"></i></div>
+            <h4>Yayınla</h4>
+            <p>Blokzincire gönder</p>
+        </div>
+        <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="lifecycle-step">
+            <div class="step-icon"><i class="fas fa-play-circle"></i></div>
+            <h4>Etkileşim</h4>
+            <p>Fonksiyonları çağır</p>
+        </div>
+        <div class="lifecycle-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="lifecycle-step">
+            <div class="step-icon"><i class="fas fa-check-double"></i></div>
+            <h4>Doğrula</h4>
+            <p>Block explorer'da kontrol et</p>
+        </div>
+    </div>
+    <div class="warning-box fragment fade-up" style="margin-top: 0.8em;">
+        <h4><i class="fas fa-info-circle"></i> &nbsp;Önemli</h4>
+        <p>Yayınlandıktan sonra kontrat, blokzincir üzerinde benzersiz bir <strong>adres</strong> alır. Herkes bu adrese işlem göndererek kontratın açık fonksiyonlarıyla etkileşime geçebilir.</p>
+    </div>
+    <aside class="notes">
+        The lifecycle is: Write the contract in Solidity, compile it to bytecode the EVM can understand, deploy it to the blockchain (which costs gas), then anyone can interact with it by calling its functions, and finally you can verify all transactions on a block explorer like Etherscan.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 12: GAS FEES ==================== -->
+<section>
+    <h2>Gas Ücretleri</h2>
+    <div class="accent-line"></div>
+    <p><strong style="color: var(--obt-white);">Gas</strong>, Ethereum üzerinde işlemleri yürütmek için gereken hesaplama gücünü ölçen birimdir. Birim: <strong style="color: var(--obt-red);">gwei</strong> (1 ETH = 10⁹ gwei).</p>
+    <div class="gas-diagram fragment fade-up">
+        <div class="gas-side">
+            <div class="gas-icon"><i class="fas fa-gas-pump"></i></div>
+            <h4>Gerçek Hayat Analojisi</h4>
+            <p>Arabanız gitmek için yakıta ihtiyaç duyar</p>
+            <p>Daha fazla mesafe = daha fazla yakıt</p>
+            <p>Yakıt fiyatı piyasaya göre değişir</p>
+            <p>Yakıt biterse = araba durur, <strong>ama mesafeyi korusunuz</strong></p>
+        </div>
+        <div class="gas-side" style="border-color: rgba(217,30,42,0.2);">
+            <div class="gas-icon"><i class="fab fa-ethereum"></i></div>
+            <h4>Ethereum Gas</h4>
+            <p>Kontratlar çalışmak için gas'a ihtiyaç duyar</p>
+            <p>Daha fazla hesaplama = daha fazla gas</p>
+            <p>Gas fiyatı talebe göre değişir</p>
+            <p>Gas biterse = işlem <strong>geri alınır ama gas hâlâ harcanır</strong></p>
+        </div>
+    </div>
+    <div class="concept-grid fragment fade-up" style="margin-top: 0.5em;">
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-fire"></i></div>
+            <h4>EIP-1559 Ücret Modeli</h4>
+            <p><strong style="color: var(--obt-white);">Toplam = Base Fee + Priority Fee</strong><br>Base fee protokol tarafından belirlenir ve <em>yakılır</em>. Priority fee (bahşiş) doğrulayıcılara gider.</p>
+        </div>
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-layer-group"></i></div>
+            <h4>Layer 2 Çözümleri</h4>
+            <p>Arbitrum, Optimism, Base gibi L2'ler işlemleri Ethereum dışında yürütüp ana zincire gönderir &mdash; gas maliyetini <strong style="color: var(--obt-white);">büyük ölçüde düşürür</strong>.</p>
+        </div>
+    </div>
+    <aside class="notes">
+        Gas is like fuel for your car. Your car needs fuel to drive — the more distance, the more fuel. Similarly, contracts need gas to execute — the more computation, the more gas. Gas prices vary by network demand, and if you run out of gas, the transaction reverts. Gas exists to prevent spam and infinite loops.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 13: SOLIDITY EXAMPLE ==================== -->
+<section>
+    <h2>Basit Bir Akıllı Kontrat</h2>
+    <div class="accent-line"></div>
+    <div class="annotated-code fragment fade-up">
+        <div class="code-block">
+            <div class="code-header">SimpleStorage.sol</div>
+<pre style="font-size: 0.38em;"><span class="code-comment">// ① State</span>
+<span class="code-keyword">contract</span> <span class="code-type">SimpleStorage</span> {
+    <span class="code-type">uint256</span> <span class="code-keyword">private</span> <span class="code-variable">storedValue</span>;
+
+    <span class="code-comment">// ② Write</span>
+    <span class="code-keyword">function</span> <span class="code-function">set</span>(<span class="code-type">uint256</span> _v)
+        <span class="code-keyword">public</span>
+    {
+        <span class="code-variable">storedValue</span> <span class="code-operator">=</span> _v;
+    }
+
+    <span class="code-comment">// ③ Read</span>
+    <span class="code-keyword">function</span> <span class="code-function">get</span>()
+        <span class="code-keyword">public</span> <span class="code-keyword">view</span>
+        <span class="code-keyword">returns</span> (<span class="code-type">uint256</span>)
+    {
+        <span class="code-keyword">return</span> <span class="code-variable">storedValue</span>;
+    }
+}</pre>
+        </div>
+        <div class="annotation-list">
+            <div class="annotation-item">
+                <div class="ann-num">1</div>
+                <p><strong style="color: var(--obt-white);">Durum Değişkeni</strong> — Blokzincirde kalıcı olarak saklanan veri. <code style="color: var(--obt-red); font-family: 'JetBrains Mono', monospace; font-size: 0.9em;">private</code> diğer kontratların okumasını engeller, ancak veri zincir üzerinde herkes tarafından görülebilir.</p>
+            </div>
+            <div class="annotation-item">
+                <div class="ann-num">2</div>
+                <p><strong style="color: var(--obt-white);">Yazma Fonksiyonu</strong> — Blokzincir durumunu değiştirir. Bir işlem gerektirir ve gas harcar.</p>
+            </div>
+            <div class="annotation-item">
+                <div class="ann-num">3</div>
+                <p><strong style="color: var(--obt-white);">Okuma Fonksiyonu</strong> — Sadece veri okur. Dışarıdan çağrıldığında (<code style="color: var(--obt-red); font-family: 'JetBrains Mono', monospace; font-size: 0.9em;">eth_call</code>) ücretsizdir. Zincir üstü bir işlemden çağrılırsa gas harcar.</p>
+            </div>
+        </div>
+    </div>
+    <aside class="notes">
+        Here's the simplest possible smart contract — it stores a number. It has a state variable that lives on the blockchain, an event that notifies when the value changes, a set function that writes data (costs gas), and a get function that reads data (free). This is the foundation of all smart contracts.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE: ABI ==================== -->
+<section>
+    <h2>ABI &mdash; Köprü</h2>
+    <div class="accent-line"></div>
+    <p>Solidity kodu derlendiğinde iki çıktı üretilir:</p>
+    <div class="comparison-grid-2 fragment fade-up" style="margin-top: 0.6em;">
+        <div class="comparison-box">
+            <div class="icon"><i class="fas fa-microchip"></i></div>
+            <h4>Bytecode</h4>
+            <p style="margin-top: 0.4em;">EVM'nin çalıştırdığı düşük seviye makine kodu. Blokzincire yayınlanan budur. İnsanlar tarafından okunamaz.</p>
+        </div>
+        <div class="comparison-box active">
+            <div class="icon"><i class="fas fa-exchange-alt"></i></div>
+            <h4>ABI (Application Binary Interface)</h4>
+            <p style="margin-top: 0.4em;">Kontratın fonksiyonlarını, parametrelerini ve dönüş tiplerini tanımlayan JSON şeması. <strong style="color: var(--obt-white);">Web2 ile Web3 arasındaki köprüdür.</strong></p>
+        </div>
+    </div>
+    <div class="code-block fragment fade-up" style="margin-top: 0.6em;">
+        <div class="code-header">SimpleStorage ABI (kısaltılmış)</div>
+<pre style="font-size: 0.38em;">[{
+  <span class="code-string">"name"</span>: <span class="code-string">"set"</span>,
+  <span class="code-string">"type"</span>: <span class="code-string">"function"</span>,
+  <span class="code-string">"inputs"</span>: [{
+    <span class="code-string">"name"</span>: <span class="code-string">"_value"</span>,
+    <span class="code-string">"type"</span>: <span class="code-string">"uint256"</span>
+  }],
+  <span class="code-string">"stateMutability"</span>: <span class="code-string">"nonpayable"</span>
+}]</pre>
+    </div>
+    <aside class="notes">
+        When you compile Solidity code, you get two outputs. The bytecode is the low-level machine code that the EVM executes — it's what actually gets deployed to the blockchain. The ABI is a JSON specification that describes the contract's interface: what functions are available, what parameters they take, and what they return.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE: NEDEN ABI ÖNEMLİ ==================== -->
+<section>
+    <h2>Neden ABI Önemli?</h2>
+    <div class="accent-line"></div>
+    <p>ABI olmadan uygulamalar kontratla nasıl konuşacağını bilemez. Farkı görelim:</p>
+    <div class="comparison-grid-2 fragment fade-up" style="margin-top: 0.6em;">
+        <div class="comparison-box active">
+            <div class="icon"><i class="fas fa-check-circle"></i></div>
+            <h4>ABI ile</h4>
+            <div class="code-block" style="margin-top: 0.5em; border: none; background: rgba(0,0,0,0.3);">
+<pre style="font-size: 0.38em;"><span class="code-comment">// ethers.js — okunabilir ve temiz</span>
+<span class="code-keyword">const</span> <span class="code-variable">contract</span> <span class="code-operator">=</span> <span class="code-keyword">new</span> <span class="code-type">Contract</span>(
+    address, abi, signer
+);
+<span class="code-keyword">await</span> <span class="code-variable">contract</span>.<span class="code-function">set</span>(<span class="code-number">42</span>);
+<span class="code-keyword">const</span> <span class="code-variable">val</span> <span class="code-operator">=</span> <span class="code-keyword">await</span> <span class="code-variable">contract</span>.<span class="code-function">get</span>();</pre>
+            </div>
+        </div>
+        <div class="comparison-box">
+            <div class="icon"><i class="fas fa-times-circle" style="color: var(--obt-red-dim);"></i></div>
+            <h4>ABI olmadan</h4>
+            <div class="code-block" style="margin-top: 0.5em; border: none; background: rgba(0,0,0,0.3);">
+<pre style="font-size: 0.38em;"><span class="code-comment">// Ham calldata — okunamaz</span>
+<span class="code-keyword">await</span> <span class="code-variable">signer</span>.<span class="code-function">sendTransaction</span>({
+    to: address,
+    data: <span class="code-string">"0x60fe47b1000000000000"</span>
+          <span class="code-string">"00000000000000000000"</span>
+          <span class="code-string">"0000000000000000002a"</span>
+});</pre>
+            </div>
+        </div>
+    </div>
+    <div class="concept-grid fragment fade-up" style="margin-top: 0.6em;">
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-puzzle-piece"></i></div>
+            <h4>Fonksiyon Seçici</h4>
+            <p>ABI, fonksiyon adını 4-byte seçiciye dönüştürür. <code style="color: var(--obt-red); font-family: 'JetBrains Mono', monospace; font-size: 0.9em;">set(uint256)</code> → <code style="color: var(--obt-red); font-family: 'JetBrains Mono', monospace; font-size: 0.9em;">0x60fe47b1</code></p>
+        </div>
+        <div class="concept-card">
+            <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
+            <h4>Frontend Entegrasyonu</h4>
+            <p>React, Vue gibi framework'ler ABI sayesinde kontrat fonksiyonlarını doğrudan çağırabilir.</p>
+        </div>
+    </div>
+    <aside class="notes">
+        This slide shows the practical difference ABI makes. With ABI, you call contract.set(42) — clean, readable, type-safe. Without ABI, you'd need to manually encode raw hex calldata — the function selector plus ABI-encoded parameters. The function selector is the first 4 bytes of the keccak256 hash of the function signature. Libraries like ethers.js and web3.js handle all of this for you, but they need the ABI to do it.
+    </aside>
+</section>

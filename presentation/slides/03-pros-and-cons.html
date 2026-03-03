@@ -1,0 +1,222 @@
+<!-- ==================== SLIDE 14: SECTION 03 TITLE ==================== -->
+<section class="section-title">
+    <div class="section-number">BÖLÜM 03</div>
+    <h2>Avantajları ve Dezavantajları</h2>
+    <p class="section-subtitle">İyi tarafları, kötü tarafları ve DAO saldırısı</p>
+    <aside class="notes">
+        Smart contracts are powerful, but they're not perfect. Let's look at the advantages, the disadvantages, and one of the most famous disasters in blockchain history — the DAO hack.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 15: ADVANTAGES ==================== -->
+<section>
+    <h2>Avantajlar</h2>
+    <div class="accent-line"></div>
+    <div class="concept-grid">
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-handshake-slash"></i></div>
+            <h4>Güvensiz Ortamda Güvenli Yürütme</h4>
+            <p>Bankaya, avukata veya herhangi bir üçüncü tarafa güvenmeye gerek yok. Anlaşmayı kod uygular.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-eye"></i></div>
+            <h4>Tam Şeffaflık</h4>
+            <p>Kontrat kodu ve tüm işlemler blokzincirde herkese açık olarak görünür ve denetlenebilir.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-bolt"></i></div>
+            <h4>Hız ve Verimlilik</h4>
+            <p>İşlemler günler değil, saniyeler ya da dakikalar içinde tamamlanır. Evrak işi yok, bekleme süresi yok.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
+            <h4>Maliyet Düşürme</h4>
+            <p>Aracı ücretlerini ortadan kaldırır. Sadece minimum düzeyde gas ücreti ödenir.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-globe"></i></div>
+            <h4>Küresel Erişim</h4>
+            <p>İnternet bağlantısı olan herkes etkileşime geçebilir. Coğrafi veya kurumsal engel yoktur.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+            <h4>Sansüre Dayanıklı</h4>
+            <p>Hiçbir kurum yayınlanmış bir kontratı kapatamaz veya değiştiremez. Zincir var olduğu sürece çalışır.</p>
+        </div>
+    </div>
+    <aside class="notes">
+        The advantages are significant: trustless execution without intermediaries, full transparency, fast settlement, lower costs, global access for anyone with internet, and censorship resistance — no single entity can shut down a deployed contract.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 16: DISADVANTAGES ==================== -->
+<section>
+    <h2>Dezavantajlar</h2>
+    <div class="accent-line"></div>
+    <div class="concept-grid">
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-bug" style="color: var(--obt-red-dim);"></i></div>
+            <h4>Hatalar Kalıcıdır</h4>
+            <p>Değiştirilemezlik, hataların kolayca düzeltilemeyeceği anlamına gelir. Koddaki bir açık felaket boyutunda kayıplara yol açabilir.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-unlink" style="color: var(--obt-red-dim);"></i></div>
+            <h4>Oracle Problemi</h4>
+            <p>Akıllı kontratlar gerçek dünya verilerine doğrudan erişemez. "Oracle"lara bağımlıdırlar &mdash; bunlar manipüle edilebilir.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-tachometer-alt" style="color: var(--obt-red-dim);"></i></div>
+            <h4>Ölçeklenebilirlik Sorunları</h4>
+            <p>Karmaşık kontratlar yüksek gas tüketir. Ağ yoğunluğu işlemleri pahalı hale getirebilir.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-undo-alt" style="color: var(--obt-red-dim);"></i></div>
+            <h4>Geri Alınamaz</h4>
+            <p>İşlemler kesindir. Yanlış adrese para mı gönderdiniz? "Geri al" butonu yoktur.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-file-alt" style="color: var(--obt-red-dim);"></i></div>
+            <h4>Boyut Sınırı (24 KB)</h4>
+            <p>Kontratlar 24 KB'ı aşamaz (EIP-170). Büyük projeler Diamond Pattern gibi çözümler gerektirir.</p>
+        </div>
+        <div class="concept-card fragment fade-up">
+            <div class="card-icon"><i class="fas fa-user-secret" style="color: var(--obt-red-dim);"></i></div>
+            <h4>MEV (Maximal Extractable Value)</h4>
+            <p>Doğrulayıcılar işlem sırasını manipüle edebilir. Front-running ve sandwich saldırıları kullanıcılara zarar verebilir.</p>
+        </div>
+    </div>
+    <aside class="notes">
+        The disadvantages: bugs are permanent and can be catastrophic, the oracle problem means contracts can't natively access real-world data, there's a steep learning curve, legal uncertainty, scalability issues with gas costs, and no way to reverse a transaction.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 17: DAO HACK ==================== -->
+<section>
+    <h2>DAO Saldırısı &mdash; Bir Ders</h2>
+    <div class="accent-line"></div>
+    <div class="timeline-card fragment fade-up">
+        <div class="timeline-header">
+            <div class="timeline-icon"><i class="fas fa-skull-crossbones"></i></div>
+            <div class="timeline-meta">
+                <h4>DAO Saldırısı</h4>
+                <div class="timeline-date">17 Haziran 2016</div>
+            </div>
+        </div>
+        <div class="timeline-body">
+            <p>DAO (Merkeziyetsiz Otonom Organizasyon), Ethereum üzerinde akıllı kontrat tabanlı bir yatırım fonuydu. O dönemin en büyük kitlesel fonlaması olarak <strong style="color: var(--obt-white);">150 milyon dolar</strong> topladı.</p>
+            <p>Bir saldırgan, kontratın çekim fonksiyonundaki <strong style="color: var(--obt-red);">reentrancy (yeniden giriş) hatasını</strong> istismar ederek, bakiye güncellenmeden önce çekim fonksiyonunu tekrar tekrar çağırıp <strong style="color: var(--obt-red);">60 milyon dolarlık</strong> ETH'yi boşalttı.</p>
+        </div>
+        <div class="timeline-stats">
+            <div class="timeline-stat">
+                <div class="stat-value">$150M</div>
+                <div class="stat-label">Toplanan</div>
+            </div>
+            <div class="timeline-stat">
+                <div class="stat-value">$60M</div>
+                <div class="stat-label">Çalınan</div>
+            </div>
+            <div class="timeline-stat">
+                <div class="stat-value">1</div>
+                <div class="stat-label">İstismar edilen hata</div>
+            </div>
+        </div>
+    </div>
+    <div class="warning-box fragment fade-up" style="margin-top: 0.5em;">
+        <h4><i class="fas fa-exclamation-triangle"></i> &nbsp;Sonrası</h4>
+        <p>Bu olay, saldırıyı geri almak için Ethereum'un tartışmalı bir <strong>hard fork</strong> yapmasına yol açtı ve zincir <strong>Ethereum (ETH)</strong> ile <strong>Ethereum Classic (ETC)</strong> olarak ikiye ayrıldı. Akıllı kontrat güvenliğinin en önemli dersi olarak tarihe geçti.</p>
+    </div>
+    <aside class="notes">
+        The DAO hack is the most famous smart contract disaster. In 2016, someone exploited a reentrancy bug to drain $60 million from a $150 million fund. This led to Ethereum hard-forking to reverse the hack, which is why we have both Ethereum and Ethereum Classic today. One single bug — catastrophic consequences.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE: SECURITY PATTERNS ==================== -->
+<section>
+    <h2>Güvenlik Kalıpları</h2>
+    <div class="accent-line"></div>
+    <p>DAO saldırısından çıkarılan dersler, bugün standart güvenlik kalıplarına dönüştü:</p>
+    <div class="annotated-code fragment fade-up">
+        <div class="code-block">
+            <div class="code-header">Checks-Effects-Interactions Kalıbı</div>
+<pre><span class="code-keyword">function</span> <span class="code-function">withdraw</span>() <span class="code-keyword">public</span> {
+    <span class="code-type">uint256</span> <span class="code-variable">amount</span> <span class="code-operator">=</span> balances[msg.sender];
+
+    <span class="code-comment">// ① KONTROL — koşulları doğrula</span>
+    <span class="code-keyword">require</span>(amount <span class="code-operator">></span> <span class="code-number">0</span>, <span class="code-string">"Bakiye yok"</span>);
+
+    <span class="code-comment">// ② ETKİ — önce durumu güncelle</span>
+    balances[msg.sender] <span class="code-operator">=</span> <span class="code-number">0</span>;
+
+    <span class="code-comment">// ③ ETKİLEŞİM — en son dış çağrı</span>
+    (<span class="code-type">bool</span> <span class="code-variable">ok</span>, ) <span class="code-operator">=</span> msg.sender.<span class="code-function">call</span>{
+        value: amount}(<span class="code-string">""</span>);
+    <span class="code-keyword">require</span>(ok);
+}</pre>
+        </div>
+        <div class="annotation-list">
+            <div class="annotation-item">
+                <div class="ann-num">1</div>
+                <p><strong style="color: var(--obt-white);">Checks</strong> — Tüm koşulları (<code style="color: var(--obt-red); font-family: 'JetBrains Mono', monospace; font-size: 0.9em;">require</code>) en başta doğrula.</p>
+            </div>
+            <div class="annotation-item">
+                <div class="ann-num">2</div>
+                <p><strong style="color: var(--obt-white);">Effects</strong> — Durumu (bakiye, değişkenler) dış çağrıdan <em>önce</em> güncelle. DAO hatası tam burada yapıldı.</p>
+            </div>
+            <div class="annotation-item">
+                <div class="ann-num">3</div>
+                <p><strong style="color: var(--obt-white);">Interactions</strong> — Dış kontrat çağrılarını en son yap. Artık reentrancy mümkün değil.</p>
+            </div>
+            <div class="annotation-item" style="border-color: rgba(34,197,94,0.3);">
+                <div class="ann-num" style="background: var(--obt-green);"><i class="fas fa-shield-alt" style="font-size: 0.7em;"></i></div>
+                <p><strong style="color: var(--obt-green);">OpenZeppelin ReentrancyGuard</strong> — <code style="color: var(--obt-red); font-family: 'JetBrains Mono', monospace; font-size: 0.9em;">nonReentrant</code> modifier'ı ekleyerek otomatik koruma sağlar.</p>
+            </div>
+        </div>
+    </div>
+    <aside class="notes">
+        The Checks-Effects-Interactions pattern is the number one defense against reentrancy. Step 1: validate all conditions with require statements. Step 2: update ALL state changes before any external calls. Step 3: make external calls last. The DAO hack happened because step 2 and 3 were reversed — the contract sent ETH before updating the balance. OpenZeppelin's ReentrancyGuard provides an easy nonReentrant modifier that adds a mutex lock automatically.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE 18: KEY TAKEAWAY ==================== -->
+<section>
+    <h2>Temel Çıkarım</h2>
+    <div class="accent-line"></div>
+    <div class="pros-cons-grid fragment fade-up" style="margin-top: 0.8em;">
+        <div class="pros-column">
+            <h4><i class="fas fa-check-circle"></i> &nbsp;Akıllı Kontratların Güçlü Yanları</h4>
+            <ul>
+                <li>Güvensiz ortamda güvenli işlem otomasyonu</li>
+                <li>Aracıları kaldırarak maliyetleri düşürme</li>
+                <li>Şeffaf ve denetlenebilir sistemler oluşturma</li>
+                <li>Küresel, izinsiz erişim sağlama</li>
+            </ul>
+        </div>
+        <div class="cons-column">
+            <h4><i class="fas fa-times-circle"></i> &nbsp;Dikkat Edilmesi Gerekenler</h4>
+            <ul>
+                <li>Yayın öncesi güvenlik denetimi</li>
+                <li>Oracle'lar aracılığıyla dış veri yönetimi</li>
+                <li>Maliyet verimliliği için gas optimizasyonu</li>
+                <li>Hukuki sonuçların anlaşılması</li>
+            </ul>
+        </div>
+    </div>
+    <div class="quote-block fragment fade-up" style="margin-top: 0.8em;">
+        <p>"Tam anlamıyla özgürlük, büyük sorumluluk gerektirir."</p>
+    </div>
+    <aside class="notes">
+        The bottom line: smart contracts are incredibly powerful for automation, cost reduction, transparency, and global access. But they require extreme caution — always audit, always test, always think about security.
+    </aside>
+</section>
+
+<!-- ==================== SLIDE: GERÇEK HAYAT DERSİ ==================== -->
+<section>
+    <h2>Gerçek Hayat Dersi</h2>
+    <div class="accent-line"></div>
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+        <img src="assets/Monad_Lost.png" alt="25K MON token kaybı" style="max-height: 520px; width: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+    </div>
+    <aside class="notes">
+        This actually happened to me. I lost 25,000 MON tokens — months of waiting for an airdrop, gone in a single transaction. No approval, no signature. My wallet was drained. There's no undo button on the blockchain. True freedom requires true responsibility.
+    </aside>
+</section>
